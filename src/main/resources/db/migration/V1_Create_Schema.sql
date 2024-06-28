@@ -1,0 +1,27 @@
+CREATE TABLE CUSTOMERS(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) not null ,
+    email VARCHAR(100) not null UNIQUE
+);
+
+CREATE TABLE ITEMS(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE SALES(
+    id SERIAL PRIMARY KEY,
+    item_id INT NOT NULL,
+    quantity INT NOT NULL,
+    sale_date DATE NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES items(id)
+);
+
+CREATE TABLE WISHLISTS(
+    id SERIAL PRIMARY KEY,
+    item_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES ITEMS(id),
+    FOREIGN KEY (customer_id) REFERENCES CUSTOMERS(id)
+)
