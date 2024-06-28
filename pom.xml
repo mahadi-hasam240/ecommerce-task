@@ -85,6 +85,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>ecommerce-task</finalName>
     </build>
 
 </project>

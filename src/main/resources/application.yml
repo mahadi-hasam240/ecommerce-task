@@ -1,6 +1,22 @@
 spring:
   application:
     name: ecommerce
+
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
+    enabled: true
+    url: ${SPRING_DATASOURCE_URL}
+    user: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
