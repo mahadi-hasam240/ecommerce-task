@@ -1,9 +1,11 @@
 package com.task.ecommerce;
 
+import com.task.ecommerce.api.SaleResource;
 import com.task.ecommerce.api.WishListResource;
 import com.task.ecommerce.domain.entity.Customer;
 import com.task.ecommerce.domain.entity.Item;
 import com.task.ecommerce.domain.entity.WishList;
+import com.task.ecommerce.service.SaleService;
 import com.task.ecommerce.service.WishListService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,36 +27,32 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(WishListResource.class)
+@WebMvcTest(SaleResource.class)  // Example controller to test
 @AutoConfigureMockMvc
-public class WishListControllerTest {
+public class SaleControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private WishListService wishlistService;
+    private SaleService saleService;
 
     @Test
-    public void testGetWishlist() throws Exception {
-        Customer customer = new Customer(1L, "John Doe", "john@example.com");
-        Item item1 = new Item(1L, "Item1", BigDecimal.valueOf(19.99));
-        Item item2 = new Item(2L, "Item2", BigDecimal.valueOf(29.99));
-        List<WishList> wishlists = new ArrayList<>();
-        wishlists.add(new WishList(1L, customer, item1));
-        wishlists.add(new WishList(2L, customer, item2));
-        Page<WishList> mockWishlistPage = new PageImpl<>(wishlists, PageRequest.of(0, 10), wishlists.size());
+    public void testGetTotalSaleForCurrentDate() throws Exception {
+        BigDecimal expectedAmount = BigDecimal.valueOf(100.00);
+        when(saleService.getTotalSaleOfCurrentDate()).thenReturn(expectedAmount);
 
-        // Mock service method
-        when(wishlistService.getCustomerWishList(eq(1L), anyInt(), anyInt())).thenReturn(mockWishlistPage);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/wish-list/1")
+        // Perform GET request and validate response
+        mockMvc.perform(get("/api/v1/sales/current-date-total")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].item.name").value("Item1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].item.name").value("Item2"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").value(expectedAmount.toString()));
+
 
     }
 }

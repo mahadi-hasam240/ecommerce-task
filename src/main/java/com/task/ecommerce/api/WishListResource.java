@@ -1,9 +1,8 @@
 package com.task.ecommerce.api;
 
-import com.task.ecommerce.common.AppUtils;
+import com.task.ecommerce.common.utils.AppUtils;
 import com.task.ecommerce.domain.entity.WishList;
 import com.task.ecommerce.service.WishListService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

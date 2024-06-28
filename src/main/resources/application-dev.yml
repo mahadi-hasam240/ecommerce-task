@@ -1,8 +1,10 @@
+server:
+  port: 8089
 spring:
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
-    enabled: true
+    enabled: false
     url: ${SPRING_DATASOURCE_URL}
     user: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
