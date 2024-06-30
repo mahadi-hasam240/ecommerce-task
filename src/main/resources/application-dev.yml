@@ -4,7 +4,7 @@ spring:
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
-    enabled: false
+    enabled: true
     url: ${SPRING_DATASOURCE_URL}
     user: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
