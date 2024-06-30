@@ -1,12 +1,15 @@
 package com.task.ecommerce.service;
 
+import com.task.ecommerce.common.exceptions.RecordNotFoundException;
 import com.task.ecommerce.domain.dto.ItemSalesDto;
 import com.task.ecommerce.domain.dto.ItemSalesQuantityDto;
 import com.task.ecommerce.domain.entity.Item;
+import com.task.ecommerce.domain.enums.ResponseMessage;
 import com.task.ecommerce.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
@@ -35,6 +38,9 @@ public class SaleService implements ISaleService{
     @Override
     public List<ItemSalesDto> findTopSellingItems() {
         List<Object[]> results = saleRepository.findTopSellingItems(PageRequest.of(0, 5));
+        if(ObjectUtils.isEmpty(results)){
+            throw  new RecordNotFoundException(ResponseMessage.RECORD_NOT_FOUND);
+        }
         return results.stream()
                 .map(result -> new ItemSalesDto((Item) result[0], (BigDecimal) result[1]))
                 .collect(Collectors.toList());
